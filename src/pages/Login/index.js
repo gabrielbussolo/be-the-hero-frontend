@@ -4,7 +4,7 @@ import "./style.css";
 import logoImage from "../../assets/logo.svg";
 import heroesImage from "../../assets/heroes.png";
 
-export default function Logon() {
+export default function Login() {
   return (
     <div className="login-container">
       <section className="form">
