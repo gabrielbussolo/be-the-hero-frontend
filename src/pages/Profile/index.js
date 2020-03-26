@@ -23,6 +23,19 @@ function Profile() {
       });
   }, [ngoId]);
 
+  async function handleDeleteIncident(id) {
+    try {
+      await api.delete(`incident/${id}`, {
+        headers: {
+          Authorization: ngoId
+        }
+      });
+      setIncidents(incidents.filter(incident => incident.id !== id));
+    } catch (error) {
+      alert(`Sorry, we had a problem, try again.`);
+    }
+  }
+
   return (
     <div className="profile-container">
       <header>
@@ -50,7 +63,10 @@ function Profile() {
                 currency: "USD"
               }).format(incident.value)}
             </p>
-            <button type="button">
+            <button
+              onClick={() => handleDeleteIncident(incident.id)}
+              type="button"
+            >
               <FiTrash2 size="20" color="a8a8b3" />
             </button>
           </li>
