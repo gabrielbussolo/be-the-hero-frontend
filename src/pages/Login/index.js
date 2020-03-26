@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import "./style.css";
 import logoImage from "../../assets/logo.svg";
 import heroesImage from "../../assets/heroes.png";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import api from "../../services/api";
 
-export default function Login() {
+function Login() {
+  const [id, setId] = useState("");
+  const history = useHistory();
+
+  async function handleLogin(event) {
+    event.preventDefault();
+    try {
+      const response = await api.post("session", { id });
+      localStorage.setItem("ngoId", id);
+      localStorage.setItem("ngoName", response.data.name);
+      history.push("profile");
+    } catch (error) {
+      alert(`Sorry, we had a problem, try again.`);
+    }
+  }
+
   return (
     <div className="login-container">
       <section className="form">
         <img src={logoImage} alt="Be the hero" />
-        <form>
+        <form onSubmit={handleLogin}>
           <h1>Login</h1>
-          <input placeholder="Your ID" />
+          <input
+            placeholder="Your ID"
+            value={id}
+            onChange={e => setId(e.target.value)}
+          />
           <button type="submit" className="button">
             Enter
           </button>
@@ -25,3 +45,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default Login;
